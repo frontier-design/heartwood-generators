@@ -41,6 +41,70 @@
   var canvasBgR = 227,
     canvasBgG = 225,
     canvasBgB = 215;
+  var iconsBgP5Image = null;
+  var iconsBgObjectUrl = null;
+  var iconsBgOverlayOpacity = 0.2;
+
+  function drawIconsBgTintOverlay(p) {
+    if (iconsBgOverlayOpacity <= 0) return;
+    var a = p.constrain(iconsBgOverlayOpacity, 0, 1) * 255;
+    p.push();
+    p.noStroke();
+    p.fill(canvasBgR, canvasBgG, canvasBgB, a);
+    p.rect(0, 0, p.width, p.height);
+    p.pop();
+  }
+
+  function revokeIconsBgObjectUrl() {
+    if (iconsBgObjectUrl) {
+      URL.revokeObjectURL(iconsBgObjectUrl);
+      iconsBgObjectUrl = null;
+    }
+  }
+
+  function drawIconsBackground(p) {
+    p.background(canvasBgR, canvasBgG, canvasBgB);
+    if (!iconsBgP5Image || !iconsBgP5Image.width) return;
+    var cw = p.width;
+    var ch = p.height;
+    var iw = iconsBgP5Image.width;
+    var ih = iconsBgP5Image.height;
+    if (iw <= 0 || ih <= 0) return;
+    var scale = p.max(cw / iw, ch / ih);
+    var dw = iw * scale;
+    var dh = ih * scale;
+    var dx = (cw - dw) * 0.5;
+    var dy = (ch - dh) * 0.5;
+    p.image(iconsBgP5Image, dx, dy, dw, dh);
+  }
+
+  function loadIconsBackgroundFromFile(file) {
+    if (!file || !iconsP5) return;
+    var isImageType = file.type && file.type.startsWith("image/");
+    var looksImage =
+      isImageType ||
+      /\.(png|jpe?g|gif|webp|bmp)$/i.test(file.name || "");
+    if (!looksImage) return;
+    revokeIconsBgObjectUrl();
+    iconsBgObjectUrl = URL.createObjectURL(file);
+    iconsP5.loadImage(
+      iconsBgObjectUrl,
+      function (img) {
+        iconsBgP5Image = img;
+      },
+      function () {
+        revokeIconsBgObjectUrl();
+        iconsBgP5Image = null;
+      },
+    );
+  }
+
+  function clearIconsBackgroundImage() {
+    iconsBgP5Image = null;
+    revokeIconsBgObjectUrl();
+    var input = document.getElementById("icons-bg-image-upload");
+    if (input) input.value = "";
+  }
 
   function parseHexRgb(hex) {
     var m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
@@ -317,7 +381,8 @@
     };
 
     p.draw = function () {
-      p.background(canvasBgR, canvasBgG, canvasBgB);
+      drawIconsBackground(p);
+      drawIconsBgTintOverlay(p);
 
       if (showGrid) {
         var o = gridOrigin(p);
@@ -485,6 +550,32 @@
     container = document.getElementById("canvas-icons");
     if (!container || typeof p5 === "undefined") return;
     iconsP5 = new p5(iconsSketch, container);
+
+    var bgFile = document.getElementById("icons-bg-image-upload");
+    if (bgFile) {
+      bgFile.addEventListener("change", function (e) {
+        var file = e.target.files && e.target.files[0];
+        if (file) loadIconsBackgroundFromFile(file);
+      });
+    }
+    var bgClear = document.getElementById("btn-icons-bg-image-clear");
+    if (bgClear) {
+      bgClear.addEventListener("click", function () {
+        clearIconsBackgroundImage();
+      });
+    }
+
+    var overlayRange = document.getElementById("icons-bg-overlay-opacity");
+    var overlayValue = document.getElementById("icons-bg-overlay-value");
+    if (overlayRange) {
+      function syncIconsOverlay() {
+        iconsBgOverlayOpacity = Number(overlayRange.value) / 100;
+        if (overlayValue) overlayValue.textContent = overlayRange.value + "%";
+        overlayRange.setAttribute("aria-valuenow", overlayRange.value);
+      }
+      overlayRange.addEventListener("input", syncIconsOverlay);
+      syncIconsOverlay();
+    }
   }
 
   window.IconsCanvas = {

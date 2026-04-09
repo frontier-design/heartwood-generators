@@ -65,7 +65,8 @@ body {
   display: block;
 }
 
-#canvas-halftone {
+#canvas-halftone,
+#canvas-datavis {
   display: none;
 }
 
@@ -80,7 +81,8 @@ body {
   border: 0.5px solid black;
 }
 
-#halftone-bar {
+#halftone-bar,
+#datavis-bar {
   display: none;
 }
 
@@ -133,15 +135,53 @@ body {
 }
 
 #halftone-bar .halftone-upload-label {
-  margin-bottom: 14px;
+  margin-bottom: 0;
 }
 
-.halftone-upload-label {
+#btn-halftone-go {
+  margin-top: 0;
+}
+
+.bg-overlay-control {
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bg-overlay-control > label {
+  display: block;
+  font-size: 11px;
+  margin-bottom: 6px;
+}
+
+.bg-overlay-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bg-overlay-row input[type="range"] {
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  accent-color: #000;
+}
+
+.bg-overlay-value {
+  flex-shrink: 0;
+  font-size: 12px;
+  min-width: 2.5em;
+  text-align: right;
+}
+
+.halftone-upload-label,
+.panel-upload-label {
   text-align: center;
   cursor: pointer;
 }
 
-.halftone-upload-label input[type="file"] {
+.halftone-upload-label input[type="file"],
+.panel-upload-label input[type="file"] {
   display: none;
 }
 
@@ -149,6 +189,16 @@ body {
 #bg-color-presets,
 #halftone-color-presets,
 #halftone-bg-color-presets {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#datavis-color-presets,
+#datavis-bg-color-presets {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
@@ -185,8 +235,10 @@ body {
 
 .color-preset,
 .bg-color-preset {
-  width: 32px;
-  height: 32px;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 1;
+  height: auto;
   padding: 0;
   border: 0.5px solid black;
   background: var(--swatch);
@@ -202,6 +254,16 @@ body {
 .color-preset.is-selected,
 .bg-color-preset.is-selected {
   outline: 1px solid black;
+}
+
+#datavis-color-presets .color-preset,
+#datavis-bg-color-presets .bg-color-preset {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  flex-shrink: 0;
+  aspect-ratio: auto;
 }
 
 #dot-size-presets {

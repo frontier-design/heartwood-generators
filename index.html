@@ -13,31 +13,24 @@
   <nav id="canvas-tabs" role="tablist" aria-label="Canvas view">
     <button type="button" class="canvas-tab is-active" data-canvas="icons" role="tab"
       aria-selected="true">Icons</button>
-    <button type="button" class="canvas-tab" data-canvas="halftone" role="tab"
-      aria-selected="false">Halftone</button>
+    <button type="button" class="canvas-tab" data-canvas="halftone" role="tab" aria-selected="false">Halftone</button>
+    <button type="button" class="canvas-tab" data-canvas="datavis" role="tab" aria-selected="false">Data vis</button>
   </nav>
 
   <div id="canvas-icons" class="canvas-container"></div>
   <div id="canvas-halftone" class="canvas-container"></div>
+  <div id="canvas-datavis" class="canvas-container"></div>
 
-  <div id="halftone-bar" class="sidebar-panel">
-    <button type="button" id="btn-halftone-go" class="free-for-all-btn">GO!</button>
-    <button type="button" id="btn-halftone-ffa" class="free-for-all-btn">FREE FOR ALL!</button>
-    <label class="free-for-all-btn halftone-upload-label" for="halftone-image-upload">
-      UPLOAD IMAGE
-      <input type="file" id="halftone-image-upload" accept="image/*" />
-    </label>
-    <div id="halftone-density-presets" role="group" aria-label="Halftone grid density">
-      <button type="button" class="halftone-density-preset" data-spacing="12" data-max-dot="10"
-        aria-label="Sparse halftone grid">Sparse</button>
-      <button type="button" class="halftone-density-preset is-selected" data-spacing="7" data-max-dot="6"
-        aria-label="Normal halftone grid">Normal</button>
-      <button type="button" class="halftone-density-preset" data-spacing="5" data-max-dot="5"
-        aria-label="Dense halftone grid">Dense</button>
-      <button type="button" class="halftone-density-preset" data-spacing="4" data-max-dot="4"
-        aria-label="Tight halftone grid">Tight</button>
-    </div>
-    <div id="halftone-color-presets" role="group" aria-label="Halftone dot color">
+  <div id="datavis-bar" class="sidebar-panel">
+    <button type="button" id="btn-datavis-bargraph" class="free-for-all-btn">STACKED BAR</button>
+    <button type="button" id="btn-datavis-simplebar" class="free-for-all-btn">SIMPLE BAR</button>
+    <button type="button" id="btn-datavis-heatmap" class="free-for-all-btn">HEATMAP</button>
+    <button type="button" id="btn-datavis-dotplot" class="free-for-all-btn">DOT PLOT</button>
+    <button type="button" id="btn-datavis-scatter" class="free-for-all-btn">SCATTER</button>
+    <button type="button" id="btn-datavis-beeswarm" class="free-for-all-btn">BEESWARM</button>
+    <button type="button" id="btn-datavis-timeline" class="free-for-all-btn">TIMELINE</button>
+    <button type="button" id="btn-datavis-ffa" class="free-for-all-btn">FREE FOR ALL!</button>
+    <div id="datavis-color-presets" role="group" aria-label="Dot color">
       <button type="button" class="color-preset is-selected" data-hex="#DD4F37" style="--swatch:#DD4F37"
         aria-label="Dot color terracotta"></button>
       <button type="button" class="color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
@@ -49,7 +42,7 @@
       <button type="button" class="color-preset" data-hex="#000000" style="--swatch:#000000"
         aria-label="Dot color black"></button>
     </div>
-    <div id="halftone-bg-color-presets" role="group" aria-label="Halftone background color">
+    <div id="datavis-bg-color-presets" role="group" aria-label="Background color">
       <button type="button" class="bg-color-preset" data-hex="#DD4F37" style="--swatch:#DD4F37"
         aria-label="Background terracotta"></button>
       <button type="button" class="bg-color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
@@ -60,6 +53,75 @@
         aria-label="Background cream"></button>
       <button type="button" class="bg-color-preset" data-hex="#000000" style="--swatch:#000000"
         aria-label="Background black"></button>
+    </div>
+    <div class="bg-overlay-control">
+      <label for="datavis-bg-overlay-opacity">Background overlay</label>
+      <div class="bg-overlay-row">
+        <input type="range" id="datavis-bg-overlay-opacity" min="0" max="100" value="20" step="1"
+          aria-valuemin="0" aria-valuemax="100" aria-valuenow="20" />
+        <span class="bg-overlay-value" id="datavis-bg-overlay-value">20%</span>
+      </div>
+    </div>
+    <label class="free-for-all-btn panel-upload-label" for="datavis-bg-image-upload">
+      BACKGROUND IMAGE
+      <input type="file" id="datavis-bg-image-upload" accept="image/*" />
+    </label>
+    <button type="button" id="btn-datavis-bg-image-clear" class="free-for-all-btn">CLEAR BG IMAGE</button>
+  </div>
+
+  <div id="halftone-bar" class="sidebar-panel">
+    <button type="button" id="btn-halftone-go" class="free-for-all-btn">GO!</button>
+    <button type="button" id="btn-halftone-ffa" class="free-for-all-btn">FREE FOR ALL!</button>
+    <label class="free-for-all-btn halftone-upload-label" for="halftone-image-upload">
+      UPLOAD IMAGE
+      <input type="file" id="halftone-image-upload" accept="image/*" />
+    </label>
+    <div id="halftone-color-presets" role="group" aria-label="Dot color">
+      <button type="button" class="color-preset is-selected" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Dot color terracotta"></button>
+      <button type="button" class="color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Dot color sand"></button>
+      <button type="button" class="color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Dot color umber"></button>
+      <button type="button" class="color-preset" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Dot color cream"></button>
+      <button type="button" class="color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Dot color black"></button>
+    </div>
+    <div id="halftone-bg-color-presets" role="group" aria-label="Background color">
+      <button type="button" class="bg-color-preset" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Background terracotta"></button>
+      <button type="button" class="bg-color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Background sand"></button>
+      <button type="button" class="bg-color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Background umber"></button>
+      <button type="button" class="bg-color-preset is-selected" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Background cream"></button>
+      <button type="button" class="bg-color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Background black"></button>
+    </div>
+    <div class="bg-overlay-control">
+      <label for="halftone-bg-overlay-opacity">Background overlay</label>
+      <div class="bg-overlay-row">
+        <input type="range" id="halftone-bg-overlay-opacity" min="0" max="100" value="20" step="1"
+          aria-valuemin="0" aria-valuemax="100" aria-valuenow="20" />
+        <span class="bg-overlay-value" id="halftone-bg-overlay-value">20%</span>
+      </div>
+    </div>
+    <label class="free-for-all-btn panel-upload-label" for="halftone-bg-image-upload">
+      BACKGROUND IMAGE
+      <input type="file" id="halftone-bg-image-upload" accept="image/*" />
+    </label>
+    <button type="button" id="btn-halftone-bg-image-clear" class="free-for-all-btn">CLEAR BG IMAGE</button>
+    <div id="halftone-density-presets" role="group" aria-label="Halftone grid density">
+      <button type="button" class="halftone-density-preset" data-spacing="12" data-max-dot="10"
+        aria-label="Sparse halftone grid">Sparse</button>
+      <button type="button" class="halftone-density-preset is-selected" data-spacing="7" data-max-dot="6"
+        aria-label="Normal halftone grid">Normal</button>
+      <button type="button" class="halftone-density-preset" data-spacing="5" data-max-dot="5"
+        aria-label="Dense halftone grid">Dense</button>
+      <button type="button" class="halftone-density-preset" data-spacing="4" data-max-dot="4"
+        aria-label="Tight halftone grid">Tight</button>
     </div>
   </div>
 
@@ -118,6 +180,19 @@
       <button type="button" class="bg-color-preset" data-hex="#000000" style="--swatch:#000000"
         aria-label="Background black"></button>
     </div>
+    <div class="bg-overlay-control">
+      <label for="icons-bg-overlay-opacity">Background overlay</label>
+      <div class="bg-overlay-row">
+        <input type="range" id="icons-bg-overlay-opacity" min="0" max="100" value="20" step="1"
+          aria-valuemin="0" aria-valuemax="100" aria-valuenow="20" />
+        <span class="bg-overlay-value" id="icons-bg-overlay-value">20%</span>
+      </div>
+    </div>
+    <label class="free-for-all-btn panel-upload-label" for="icons-bg-image-upload">
+      BACKGROUND IMAGE
+      <input type="file" id="icons-bg-image-upload" accept="image/*" />
+    </label>
+    <button type="button" id="btn-icons-bg-image-clear" class="free-for-all-btn">CLEAR BG IMAGE</button>
     <div id="dot-size-presets" role="group" aria-label="Dot size">
       <button type="button" class="dot-size-preset is-selected" data-diameter="10" aria-label="Small dots">
         <span class="dot-size-preview" aria-hidden="true"></span>
@@ -136,6 +211,7 @@
   <script src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
   <script src="js/canvas-icons.js"></script>
   <script src="js/canvas-halftone.js"></script>
+  <script src="js/canvas-datavis.js"></script>
   <script src="js/preset-ui.js"></script>
   <script src="js/color-presets.js"></script>
   <script src="js/dot-size-presets.js"></script>

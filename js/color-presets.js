@@ -40,6 +40,16 @@
       ".bg-color-preset",
       "setHalftoneCanvasBackgroundHex",
     );
+    wireGroup(
+      "datavis-color-presets",
+      ".color-preset",
+      "setDataVisDotColorHex",
+    );
+    wireGroup(
+      "datavis-bg-color-presets",
+      ".bg-color-preset",
+      "setDataVisCanvasBackgroundHex",
+    );
   }
 
   if (document.readyState === "loading") {
