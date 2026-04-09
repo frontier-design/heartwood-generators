@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heartwood Icon Generator</title>
+  <link rel="icon" href="assets/icons/favicon-house-white.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body>
+  <nav id="canvas-tabs" role="tablist" aria-label="Canvas view">
+    <button type="button" class="canvas-tab is-active" data-canvas="icons" role="tab"
+      aria-selected="true">Icons</button>
+    <button type="button" class="canvas-tab" data-canvas="halftone" role="tab"
+      aria-selected="false">Halftone</button>
+  </nav>
+
+  <div id="canvas-icons" class="canvas-container"></div>
+  <div id="canvas-halftone" class="canvas-container"></div>
+
+  <div id="halftone-bar" class="sidebar-panel">
+    <button type="button" id="btn-halftone-go" class="free-for-all-btn">GO!</button>
+    <button type="button" id="btn-halftone-ffa" class="free-for-all-btn">FREE FOR ALL!</button>
+    <label class="free-for-all-btn halftone-upload-label" for="halftone-image-upload">
+      UPLOAD IMAGE
+      <input type="file" id="halftone-image-upload" accept="image/*" />
+    </label>
+    <div id="halftone-density-presets" role="group" aria-label="Halftone grid density">
+      <button type="button" class="halftone-density-preset" data-spacing="12" data-max-dot="10"
+        aria-label="Sparse halftone grid">Sparse</button>
+      <button type="button" class="halftone-density-preset is-selected" data-spacing="7" data-max-dot="6"
+        aria-label="Normal halftone grid">Normal</button>
+      <button type="button" class="halftone-density-preset" data-spacing="5" data-max-dot="5"
+        aria-label="Dense halftone grid">Dense</button>
+      <button type="button" class="halftone-density-preset" data-spacing="4" data-max-dot="4"
+        aria-label="Tight halftone grid">Tight</button>
+    </div>
+    <div id="halftone-color-presets" role="group" aria-label="Halftone dot color">
+      <button type="button" class="color-preset is-selected" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Dot color terracotta"></button>
+      <button type="button" class="color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Dot color sand"></button>
+      <button type="button" class="color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Dot color umber"></button>
+      <button type="button" class="color-preset" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Dot color cream"></button>
+      <button type="button" class="color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Dot color black"></button>
+    </div>
+    <div id="halftone-bg-color-presets" role="group" aria-label="Halftone background color">
+      <button type="button" class="bg-color-preset" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Background terracotta"></button>
+      <button type="button" class="bg-color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Background sand"></button>
+      <button type="button" class="bg-color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Background umber"></button>
+      <button type="button" class="bg-color-preset is-selected" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Background cream"></button>
+      <button type="button" class="bg-color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Background black"></button>
+    </div>
+  </div>
+
+  <div id="preset-bar" class="sidebar-panel">
+    <div id="preset-buttons">
+      <button type="button" id="btn-preset-folder" aria-label="Folder shape preset">
+        <img src="assets/icons/folder.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-location" aria-label="Location shape preset">
+        <img src="assets/icons/location.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-clock" aria-label="Clock shape preset">
+        <img src="assets/icons/clock.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-color-house" aria-label="Color house shape preset">
+        <img src="assets/icons/house.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-eyes" aria-label="Eyes shape preset">
+        <img src="assets/icons/eyes.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-transit" aria-label="Transit shape preset">
+        <img src="assets/icons/transit.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-bus" aria-label="Bus shape preset">
+        <img src="assets/icons/bus.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-mail" aria-label="Mail shape preset">
+        <img src="assets/icons/mail.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-smiley" aria-label="Smiley shape preset">
+        <img src="assets/icons/smiley.svg" alt="" decoding="async" />
+      </button>
+    </div>
+    <button type="button" id="btn-free-for-all" class="free-for-all-btn">FREE FOR ALL!</button>
+    <div id="color-presets" role="group" aria-label="Dot color">
+      <button type="button" class="color-preset is-selected" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Dot color terracotta"></button>
+      <button type="button" class="color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Dot color sand"></button>
+      <button type="button" class="color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Dot color umber"></button>
+      <button type="button" class="color-preset" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Dot color cream"></button>
+      <button type="button" class="color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Dot color black"></button>
+    </div>
+    <div id="bg-color-presets" role="group" aria-label="Background color">
+      <button type="button" class="bg-color-preset" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Background terracotta"></button>
+      <button type="button" class="bg-color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Background sand"></button>
+      <button type="button" class="bg-color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Background umber"></button>
+      <button type="button" class="bg-color-preset is-selected" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Background cream"></button>
+      <button type="button" class="bg-color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Background black"></button>
+    </div>
+    <div id="dot-size-presets" role="group" aria-label="Dot size">
+      <button type="button" class="dot-size-preset is-selected" data-diameter="10" aria-label="Small dots">
+        <span class="dot-size-preview" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="dot-size-preset" data-diameter="15" aria-label="Medium dots">
+        <span class="dot-size-preview" aria-hidden="true"></span>
+      </button>
+      <button type="button" class="dot-size-preset" data-diameter="20" aria-label="Large dots">
+        <span class="dot-size-preview" aria-hidden="true"></span>
+      </button>
+    </div>
+    <textarea id="preset-dump" readonly rows="4" spellcheck="false" aria-label="Exported shape JSON"></textarea>
+    <div id="preset-toast" aria-live="polite"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.3/lib/p5.min.js"></script>
+  <script src="js/canvas-icons.js"></script>
+  <script src="js/canvas-halftone.js"></script>
+  <script src="js/preset-ui.js"></script>
+  <script src="js/color-presets.js"></script>
+  <script src="js/dot-size-presets.js"></script>
+  <script src="js/canvas-switcher.js"></script>
+</body>
+
+</html>
