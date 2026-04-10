@@ -1772,7 +1772,8 @@
     if (dvOverlayRange) {
       function syncDataVisOverlay() {
         dataVisBgOverlayOpacity = Number(dvOverlayRange.value) / 100;
-        if (dvOverlayValue) dvOverlayValue.textContent = dvOverlayRange.value + "%";
+        if (dvOverlayValue)
+          dvOverlayValue.textContent = dvOverlayRange.value + "%";
         dvOverlayRange.setAttribute("aria-valuenow", dvOverlayRange.value);
       }
       dvOverlayRange.addEventListener("input", syncDataVisOverlay);
