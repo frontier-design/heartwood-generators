@@ -1,0 +1,29 @@
+<div id="preset-buttons">
+      <button type="button" id="btn-preset-folder" aria-label="Folder shape preset">
+        <img src="assets/icons/folder.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-location" aria-label="Location shape preset">
+        <img src="assets/icons/location.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-clock" aria-label="Clock shape preset">
+        <img src="assets/icons/clock.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-color-house" aria-label="Color house shape preset">
+        <img src="assets/icons/house.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-eyes" aria-label="Eyes shape preset">
+        <img src="assets/icons/eyes.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-transit" aria-label="Transit shape preset">
+        <img src="assets/icons/transit.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-bus" aria-label="Bus shape preset">
+        <img src="assets/icons/bus.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-mail" aria-label="Mail shape preset">
+        <img src="assets/icons/mail.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-preset-smiley" aria-label="Smiley shape preset">
+        <img src="assets/icons/smiley.svg" alt="" decoding="async" />
+      </button>
+    </div>
