@@ -15,11 +15,100 @@
       aria-selected="true">Icons</button>
     <button type="button" class="canvas-tab" data-canvas="halftone" role="tab" aria-selected="false">Halftone</button>
     <button type="button" class="canvas-tab" data-canvas="datavis" role="tab" aria-selected="false">Data vis</button>
+    <button type="button" class="canvas-tab" data-canvas="mesh" role="tab" aria-selected="false">Mesh</button>
   </nav>
 
   <div id="canvas-icons" class="canvas-container"></div>
   <div id="canvas-halftone" class="canvas-container"></div>
   <div id="canvas-datavis" class="canvas-container"></div>
+  <div id="canvas-mesh" class="canvas-container"></div>
+
+  <div id="mesh-bar" class="sidebar-panel">
+    <div id="mesh-preset-buttons">
+      <button type="button" id="btn-mesh-location" aria-label="Location shape">
+        <img src="assets/icons/location.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-mesh-clock" aria-label="Clock shape">
+        <img src="assets/icons/clock.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-mesh-house" aria-label="House shape">
+        <img src="assets/icons/house.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-mesh-transit" aria-label="Transit shape">
+        <img src="assets/icons/transit.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-mesh-bus" aria-label="Bus shape">
+        <img src="assets/icons/bus.svg" alt="" decoding="async" />
+      </button>
+      <button type="button" id="btn-mesh-mail" aria-label="Mail shape">
+        <img src="assets/icons/mail.svg" alt="" decoding="async" />
+      </button>
+    </div>
+    <div class="mesh-section">
+      <div class="mesh-halftone-row">
+        <button type="button" id="btn-mesh-halftone" class="free-for-all-btn">HALFTONE</button>
+        <label class="free-for-all-btn panel-upload-label" for="mesh-halftone-upload">
+          UPLOAD IMAGE
+          <input type="file" id="mesh-halftone-upload" accept="image/*" />
+        </label>
+      </div>
+      <div id="mesh-halftone-density" role="group" aria-label="Halftone density">
+        <button type="button" class="halftone-density-preset" data-spacing="12" data-max-dot="10"
+          aria-label="Sparse halftone">Sparse</button>
+        <button type="button" class="halftone-density-preset" data-spacing="7" data-max-dot="6"
+          aria-label="Normal halftone">Normal</button>
+        <button type="button" class="halftone-density-preset" data-spacing="5" data-max-dot="5"
+          aria-label="Dense halftone">Dense</button>
+        <button type="button" class="halftone-density-preset is-selected" data-spacing="4" data-max-dot="4"
+          aria-label="Tight halftone">Tight</button>
+      </div>
+    </div>
+    <button type="button" id="btn-mesh-bargraph" class="free-for-all-btn">STACKED BAR</button>
+    <button type="button" id="btn-mesh-simplebar" class="free-for-all-btn">SIMPLE BAR</button>
+    <button type="button" id="btn-mesh-heatmap" class="free-for-all-btn">HEATMAP</button>
+    <button type="button" id="btn-mesh-dotplot" class="free-for-all-btn">DOT PLOT</button>
+    <button type="button" id="btn-mesh-scatter" class="free-for-all-btn">SCATTER</button>
+    <button type="button" id="btn-mesh-beeswarm" class="free-for-all-btn">BEESWARM</button>
+    <button type="button" id="btn-mesh-timeline" class="free-for-all-btn">TIMELINE</button>
+    <button type="button" id="btn-mesh-ffa" class="free-for-all-btn">FREE FOR ALL!</button>
+    <div id="mesh-color-presets" role="group" aria-label="Dot color">
+      <button type="button" class="color-preset is-selected" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Dot color terracotta"></button>
+      <button type="button" class="color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Dot color sand"></button>
+      <button type="button" class="color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Dot color umber"></button>
+      <button type="button" class="color-preset" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Dot color cream"></button>
+      <button type="button" class="color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Dot color black"></button>
+    </div>
+    <div id="mesh-bg-color-presets" role="group" aria-label="Background color">
+      <button type="button" class="bg-color-preset" data-hex="#DD4F37" style="--swatch:#DD4F37"
+        aria-label="Background terracotta"></button>
+      <button type="button" class="bg-color-preset" data-hex="#AE9367" style="--swatch:#AE9367"
+        aria-label="Background sand"></button>
+      <button type="button" class="bg-color-preset" data-hex="#7B4536" style="--swatch:#7B4536"
+        aria-label="Background umber"></button>
+      <button type="button" class="bg-color-preset is-selected" data-hex="#E3E1D7" style="--swatch:#E3E1D7"
+        aria-label="Background cream"></button>
+      <button type="button" class="bg-color-preset" data-hex="#000000" style="--swatch:#000000"
+        aria-label="Background black"></button>
+    </div>
+    <div class="bg-overlay-control">
+      <label for="mesh-bg-overlay-opacity">Background overlay</label>
+      <div class="bg-overlay-row">
+        <input type="range" id="mesh-bg-overlay-opacity" min="0" max="100" value="20" step="1" aria-valuemin="0"
+          aria-valuemax="100" aria-valuenow="20" />
+        <span class="bg-overlay-value" id="mesh-bg-overlay-value">20%</span>
+      </div>
+    </div>
+    <label class="free-for-all-btn panel-upload-label" for="mesh-bg-image-upload">
+      BACKGROUND IMAGE
+      <input type="file" id="mesh-bg-image-upload" accept="image/*" />
+    </label>
+    <button type="button" id="btn-mesh-bg-image-clear" class="free-for-all-btn">CLEAR BG IMAGE</button>
+  </div>
 
   <div id="datavis-bar" class="sidebar-panel">
     <button type="button" id="btn-datavis-bargraph" class="free-for-all-btn">STACKED BAR</button>
@@ -203,6 +292,7 @@
   <script src="js/canvas-icons.js"></script>
   <script src="js/canvas-halftone.js"></script>
   <script src="js/canvas-datavis.js"></script>
+  <script src="js/canvas-mesh.js"></script>
   <script src="js/preset-ui.js"></script>
   <script src="js/color-presets.js"></script>
   <script src="js/dot-size-presets.js"></script>

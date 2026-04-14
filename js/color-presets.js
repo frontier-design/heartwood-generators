@@ -50,6 +50,16 @@
       ".bg-color-preset",
       "setDataVisCanvasBackgroundHex",
     );
+    wireGroup(
+      "mesh-color-presets",
+      ".color-preset",
+      "setMeshDotColorHex",
+    );
+    wireGroup(
+      "mesh-bg-color-presets",
+      ".bg-color-preset",
+      "setMeshCanvasBackgroundHex",
+    );
   }
 
   if (document.readyState === "loading") {

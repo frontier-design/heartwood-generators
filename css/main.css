@@ -66,7 +66,8 @@ body {
 }
 
 #canvas-halftone,
-#canvas-datavis {
+#canvas-datavis,
+#canvas-mesh {
   display: none;
 }
 
@@ -82,17 +83,44 @@ body {
 }
 
 #halftone-bar,
-#datavis-bar {
+#datavis-bar,
+#mesh-bar {
   display: none;
 }
 
-#preset-buttons {
+.mesh-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 0.5px solid black;
+}
+
+.mesh-section .free-for-all-btn:first-child,
+.mesh-halftone-row .free-for-all-btn {
+  margin-top: 0;
+}
+
+.mesh-halftone-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+#mesh-halftone-density {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 10px;
+}
+
+#preset-buttons,
+#mesh-preset-buttons {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
 }
 
-#preset-buttons button {
+#preset-buttons button,
+#mesh-preset-buttons button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -105,11 +133,13 @@ body {
   cursor: pointer;
 }
 
-#preset-buttons button:hover {
+#preset-buttons button:hover,
+#mesh-preset-buttons button:hover {
   background: #eee;
 }
 
-#preset-buttons button img {
+#preset-buttons button img,
+#mesh-preset-buttons button img {
   display: block;
   width: 44px;
   height: 44px;
@@ -188,7 +218,9 @@ body {
 #color-presets,
 #bg-color-presets,
 #halftone-color-presets,
-#halftone-bg-color-presets {
+#halftone-bg-color-presets,
+#mesh-color-presets,
+#mesh-bg-color-presets {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
