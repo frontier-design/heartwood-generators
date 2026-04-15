@@ -164,6 +164,11 @@ body {
   background: #eee;
 }
 
+.free-for-all-btn.is-selected {
+  background: black;
+  color: white;
+}
+
 #halftone-bar .halftone-upload-label {
   margin-bottom: 0;
 }

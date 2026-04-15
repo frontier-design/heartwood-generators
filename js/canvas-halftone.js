@@ -14,6 +14,9 @@
   var CURSOR_INFLUENCE_RADIUS = 120;
   var CURSOR_MAX_PUSH = 25;
   var CURSOR_NUDGE_EASE = 0.18;
+  var FLOATING_EDGES_BAND = 0.35;
+
+  var floatingEdges = false;
 
   var halftoneP5 = null;
   var container = null;
@@ -103,6 +106,10 @@
       b: parseInt(m[3], 16),
       css: "#" + m[1] + m[2] + m[3],
     };
+  }
+
+  function fmtSvg(n) {
+    return (Math.round(Number(n) * 100) / 100).toFixed(2);
   }
 
   function applyBodyBg(css) {
@@ -310,21 +317,48 @@
 
       dots = [];
       var half = GRID_SPACING / 2;
+      var edgeBand = Math.min(r.w, r.h) * FLOATING_EDGES_BAND;
       for (var gy = r.y + half; gy < r.y + r.h; gy += GRID_SPACING) {
         for (var gx = r.x + half; gx < r.x + r.w; gx += GRID_SPACING) {
           var ix = Math.max(0, Math.min(sw - 1, Math.floor((gx - r.x) / r.sc)));
           var iy = Math.max(0, Math.min(sh - 1, Math.floor((gy - r.y) / r.sc)));
           var idx = 4 * (iy * sw + ix);
+          var alpha = px[idx + 3] / 255;
           var lum =
             (0.299 * px[idx] + 0.587 * px[idx + 1] + 0.114 * px[idx + 2]) / 255;
+
+          // skip white or transparent pixels
+          if (alpha < 0.05 || lum * alpha > 0.95) continue;
+
+          var finalGX = gx;
+          var finalGY = gy;
+          var baseDiam = (1 - lum) * alpha * MAX_DOT;
+
+          if (floatingEdges && edgeBand > 0) {
+            // superellipse (squircle) distance — between rectangle and ellipse
+            var cx = r.x + r.w * 0.5;
+            var cy = r.y + r.h * 0.5;
+            var nx = Math.abs((gx - cx) / (r.w * 0.5));
+            var ny = Math.abs((gy - cy) / (r.h * 0.5));
+            var sqDist = Math.pow(nx * nx * nx + ny * ny * ny, 1 / 3);
+            // fade starts at ~0.6 from center, fully gone by ~1.0
+            var ef = Math.max(0, Math.min(1, (sqDist - 0.55) / 0.45));
+            // smooth cubic ramp — stays near 0 in the interior, rises gently
+            ef = ef * ef * ef;
+
+            // shrink dots smoothly toward the edge
+            baseDiam *= 1 - ef * 0.9;
+
+            if (baseDiam < 0.2) continue;
+          }
 
           dots.push({
             x: p.random(p.width),
             y: p.random(p.height),
             diam: WANDER_DOT,
-            gridX: gx,
-            gridY: gy,
-            gridDiam: (1 - lum) * MAX_DOT,
+            gridX: finalGX,
+            gridY: finalGY,
+            gridDiam: baseDiam,
             angle: p.random(p.TWO_PI),
             speed: p.random(WANDER_SPEED * 0.5, WANDER_SPEED),
             mode: "wander",
@@ -446,6 +480,87 @@
     window.halftoneGo = goToHalftone;
     window.halftoneFreeForAll = freeForAll;
     window._halftoneRebuildDots = buildDots;
+    window._halftoneRebuildAndSnap = function () {
+      // check if any dots are currently in halftone (or seeking to it)
+      var wasHalftone = false;
+      for (var i = 0; i < dots.length; i++) {
+        if (dots[i].mode === "halftone" || (dots[i].mode === "seek" && dots[i].seekAfter === "halftone")) {
+          wasHalftone = true;
+          break;
+        }
+      }
+      buildDots();
+      if (wasHalftone) {
+        // snap every dot directly to its grid position — no animation
+        for (var j = 0; j < dots.length; j++) {
+          var d = dots[j];
+          d.x = d.gridX;
+          d.y = d.gridY;
+          d.diam = d.gridDiam;
+          d.mode = "halftone";
+        }
+      }
+    };
+    window._halftoneExportSvg = function () {
+      if (!p || p.width <= 0 || p.height <= 0 || !dots.length) return;
+      var f = fmtSvg;
+      var bgHex =
+        "#" +
+        ("0" + state.bgR.toString(16)).slice(-2) +
+        ("0" + state.bgG.toString(16)).slice(-2) +
+        ("0" + state.bgB.toString(16)).slice(-2);
+      var dotHex =
+        "#" +
+        ("0" + state.dotR.toString(16)).slice(-2) +
+        ("0" + state.dotG.toString(16)).slice(-2) +
+        ("0" + state.dotB.toString(16)).slice(-2);
+      var parts = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' +
+          f(p.width) +
+          " " +
+          f(p.height) +
+          '" width="' +
+          f(p.width) +
+          '" height="' +
+          f(p.height) +
+          '">',
+        "<title>Halftone</title>",
+        '<rect width="' +
+          f(p.width) +
+          '" height="' +
+          f(p.height) +
+          '" fill="' +
+          bgHex +
+          '"/>',
+        '<g id="dots" fill="' + dotHex + '">',
+      ];
+      for (var j = 0; j < dots.length; j++) {
+        var d = dots[j];
+        var r = d.diam / 2;
+        if (r < 0.15) continue;
+        parts.push(
+          '<circle cx="' +
+            f(d.x + d.nudgeX) +
+            '" cy="' +
+            f(d.y + d.nudgeY) +
+            '" r="' +
+            f(r) +
+            '"/>',
+        );
+      }
+      parts.push("</g>", "</svg>");
+      var svg = parts.join("");
+      var blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "halftone.svg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
     window.halftoneSetImage = function (imgElement, isGif, file) {
       removeOldHeroElement();
       heroP5Img = null;
@@ -612,6 +727,22 @@
     if (ffaBtn)
       ffaBtn.addEventListener("click", function () {
         if (window.halftoneFreeForAll) window.halftoneFreeForAll();
+      });
+
+    var svgBtn = document.getElementById("btn-halftone-svg");
+    if (svgBtn)
+      svgBtn.addEventListener("click", function () {
+        if (window._halftoneExportSvg) window._halftoneExportSvg();
+      });
+
+    var feBtn = document.getElementById("btn-halftone-floating-edges");
+    if (feBtn)
+      feBtn.addEventListener("click", function () {
+        floatingEdges = !floatingEdges;
+        feBtn.classList.toggle("is-selected", floatingEdges);
+        if (typeof window._halftoneRebuildAndSnap === "function") {
+          window._halftoneRebuildAndSnap();
+        }
       });
 
     var fileInput = document.getElementById("halftone-image-upload");
